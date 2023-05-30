@@ -1,0 +1,38 @@
+import tweepy
+from datetime import datetime, timedelta
+
+# Authenticate with Twitter API
+consumer_key = 'your_consumer_key'
+consumer_secret = 'your_consumer_secret'
+access_token = 'your_access_token'
+access_token_secret = 'your_access_token_secret'
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+api = tweepy.API(auth)
+
+# Define the username of the Twitter user to check
+username = 'target_username'
+
+# Get the user's profile information
+user = api.get_user(screen_name=username)
+
+# Get the user's follower count
+follower_count = user.followers_count
+
+# Check if the user has less than 50 followers
+if follower_count < 50:
+    # Get the user's account creation date
+    account_creation_date = user.created_at
+
+    # Calculate the account age in days
+    account_age_days = (datetime.now() - account_creation_date).days
+
+    # Check if the account age is less than 1 year (365 days)
+    if account_age_days < 365:
+        print(f"The user @{username} meets the criteria with {follower_count} followers and an account age of {account_age_days} days.")
+    else:
+        print(f"The user @{username} does not meet the account age requirement.")
+else:
+    print(f"The user @{username} does not meet the follower count requirement.")
